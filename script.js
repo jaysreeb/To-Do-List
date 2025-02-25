@@ -5,12 +5,7 @@ const listDetails = document.getElementById("list-container");
 const errorDiv = document.getElementById("error");
 let todos =[]; // To store the todo objects
 //Check if the elements of the html are properly being captured
-console.log("Checking elements:", {
-    inputData,
-    todoDate,
-    addButton,
-    listDetails
-});
+// console.log("Checking elements:", {inputData,todoDate,addButton,listDetails});
 
 // Creating a function to generate ID's for todo
 function ID(){
@@ -19,14 +14,14 @@ function ID(){
 }
 // Load saved todos when page loads
 function loadTodos(){
-    console.log("Loading todos...");
-    console.log("Raw localStorage data:", localStorage.getItem("todos"));    
+    // console.log("Loading todos...");
+    // console.log("Raw localStorage data:", localStorage.getItem("todos"));    
     try{
         const savedTodos = localStorage.getItem('todos');
         if(savedTodos){
             todos = JSON.parse(savedTodos);
             listDetails.innerHTML = "";
-            console.log('saved todos:', typeof(todos));
+            // console.log('saved todos:', typeof(todos));
             todos.forEach(todo => renderTodoItems(todo));
         }
     }catch(error){
@@ -37,17 +32,17 @@ function loadTodos(){
 // todo saves the data as object and it is pushed to todos using push() which converts it into an array of objects
 addButton.addEventListener("click", function(event){
     event.preventDefault();
-    console.log("Button clicked!");
+    // console.log("Button clicked!");
     const todo ={
         id: ID(),
         text: inputData.value.trim(),
         date: todoDate.value,
         completed: false
     };
-    console.log("New todo:", todo);
+    // console.log("New todo:", todo);
     if(todo.text !=="" && todo.date !== ""){
         todos.push(todo);
-        console.log("Updated todos array:", todos);
+        // console.log("Updated todos array:", todos);
         renderTodoItems(todo); 
         saveData();  
         inputData.value="";
@@ -66,7 +61,7 @@ addButton.addEventListener("click", function(event){
 
 // render todo items added by user in the UI
 function renderTodoItems(todo){
-     console.log("Rendering todo:", todo);
+    // console.log("Rendering todo:", todo);
     const li= document.createElement("li");
     li.dataset.id = todo.id;
 
@@ -125,7 +120,7 @@ function saveData(){
         }
     
     localStorage.setItem('todos', JSON.stringify(todos));
-    console.log('Data saved to local storage:', localStorage.getItem('todos'));    
+    // console.log('Data saved to local storage:', localStorage.getItem('todos'));    
 
     }catch(error){
         console.error('Error saving the data', error);
@@ -134,16 +129,53 @@ function saveData(){
 
 // Function to edit todos
 function editTodo(todoId){
-    console.log(`The todoId is ${todoId} and its ${typeof(todoId)} type`);
-  
+    // console.log(`The todoId is ${todoId} and its ${typeof(todoId)} type`);
+    // Find the todo object in the array
+    const editingTodo = todos.find(editingTodo => editingTodo.id === todoId);
+    // console.log("Todo to be edited editingTodo", editingTodo.id , "todo Id is", todoId);
+
+    if(!editingTodo){
+        console.warn("Todo not found");
+        return;
+    }
+    //data-id created in the render function - li.dataset.id = todo.id; Now, we need to check for todoitem in the li
+    const todoItem = document.querySelector(`li[data-id="${todoId}"]`); 
+    if (!todoItem) return console.warn("Todo item not found!");
+
+    const textSpan = todoItem.querySelector(".todo-text");
+    if (!textSpan) return console.warn("Text span not found!");
+
+    const inputField = document.createElement("input");
+    // console.log("The editingTodo.text is ",editingTodo.text);
+    inputField.value = editingTodo.text;
+    inputField.className = "edit-input";
+
+    textSpan.replaceWith(inputField);
+    inputField.focus();
+    // console.log(inputField);
+
+    inputField.addEventListener("blur", () => {
+        const updatedText = inputField.value.trim();
+        // console.log(updatedText);
+        if (updatedText) {
+            todos.text = updatedText;  
+            saveData();  // Save updated data
+            textSpan.textContent = updatedText;  // Directly update UI
+        }
+        inputField.replaceWith(textSpan);  // Replace input with text
+    });
+
+    inputField.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") inputField.blur();
+    });
 }
 
 // Delete todos
 function deleteTask(todoId){
-    console.log("Deleting todo:", todoId);
-    console.log("Before deletion:", todos);
+    // console.log("Deleting todo:", todoId);
+    // console.log("Before deletion:", todos);
     todos = todos.filter(todo => todo.id !== todoId);
-    console.log('After filtering:', todos);
+    // console.log('After filtering:', todos);
     saveData();  
     // renderTodoItems();
     listDetails.innerHTML = "";  
@@ -152,6 +184,5 @@ function deleteTask(todoId){
 }
 
 window.addEventListener('load', function(){
-    
     loadTodos()
 });

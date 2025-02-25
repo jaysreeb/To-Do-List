@@ -20,9 +20,7 @@
     width: 100%;
     max-width: 740px;
     min-height: 800px;
-    /* height: 800px; */
-    /* background: linear-gradient(135deg, rgb(15, 215, 241), #964d4d); */
-    background: linear-gradient(135deg, #fdd4e5, #f3f4f5); 
+    background: linear-gradient(135deg, #f3c294, #eeaafc); 
     margin: 100px auto 20px;
     padding: 40px 30px 70px;
     border-radius: 10px;
@@ -109,9 +107,9 @@ input{
 }
 .check:checked + span{
     text-decoration: line-through;
-    text-decoration-color: hsl(0, 0%, 2%);
-    text-decoration-style: wavy;
-    text-decoration-thickness: 3px;  
+    text-decoration-color: hsl(262, 91%, 9%);
+    text-decoration-style: solid;
+    text-decoration-thickness: 1px;  
 }
 
 #list-container{
@@ -129,9 +127,7 @@ li {
     gap: 0px;  /* space between elements */
     padding: 10px;
     margin: 10px 0;
-    /* background : rgb(247, 237, 237); */
     border-radius: 8px;
-    /* box-shadow: 0 2px 4px rgba(0,0,0,0.1); */
 }
 
 /* Style the spans that contain task and date */

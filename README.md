@@ -10,12 +10,14 @@ A simple **To-Do List** app built using **HTML, CSS, and JavaScript** that allow
 
 
 ## 🚀 Updating the below features
-- The Edit button
 - Count of completed task
 - A lot more coming soon
 
 ## 📸 Preview
+![alt text](image-4.png)
+![alt text](image-5.png)
 ![alt text](image-3.png)
+
 
 ## 📂 Technologies Used
 - **HTML** - Structure  
