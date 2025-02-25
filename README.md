@@ -7,6 +7,7 @@ A simple **To-Do List** app built using **HTML, CSS, and JavaScript** that allow
 - ✅ **Mark Tasks as Completed**  
 - ❌ **Delete Tasks**  
 - 💾 **Save Tasks Using localStorage** (Data remains even after refreshing)
+-   Creating an Edit option to edit the todo's
 
 ## 📸 Preview
 ![alt text](image.png)

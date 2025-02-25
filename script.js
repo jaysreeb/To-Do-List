@@ -2,157 +2,156 @@ const inputData = document.getElementById("input-box");
 const todoDate = document.getElementById("datepick");
 const addButton = document.getElementById("addbutton");
 const listDetails = document.getElementById("list-container");
+const errorDiv = document.getElementById("error");
 let todos =[]; // To store the todo objects
+//Check if the elements of the html are properly being captured
+console.log("Checking elements:", {
+    inputData,
+    todoDate,
+    addButton,
+    listDetails
+});
 
+// Creating a function to generate ID's for todo
+function ID(){
+    const uniqueId = Math.floor(Math.random() * 1000000).toString(16);
+    return uniqueId;
+}
 // Load saved todos when page loads
 function loadTodos(){
-    const savedTodos =localStorage.getItem('todos');
-    if(savedTodos){
-        todos = JSON.parse(savedTodos);
-        console.log(todos);
-        listDetails.innerHTML ="";
-        todos.forEach(todo => {
-            const li = document.createElement("li");
-            li.innerHTML = `<span class="todo-text" style="text-decoration: ${todo.completed ? 'line-through' : 'none'}">${todo.text}</span>
-                <span class="todo-date" style="text-decoration: ${todo.completed ? 'line-through' : 'none'}">${todo.date}</span>
-                <button onclick="deleteTask(this)">Delete</button>`;
-            listDetails.appendChild(li);            
-        });
-        
-
+    console.log("Loading todos...");
+    console.log("Raw localStorage data:", localStorage.getItem("todos"));    
+    try{
+        const savedTodos = localStorage.getItem('todos');
+        if(savedTodos){
+            todos = JSON.parse(savedTodos);
+            listDetails.innerHTML = "";
+            console.log('saved todos:', typeof(todos));
+            todos.forEach(todo => renderTodoItems(todo));
+        }
+    }catch(error){
+        console.log('Error loading todoso:', error);
     }
 }
 
-addButton.addEventListener("click", function(){
-    // check if user input is empty, if empty display an error
-    if(inputData.value===""|| todoDate.value ===""){
-        const errorDiv= document.getElementById("error");
-        errorDiv.textContent = 'Please Enter your task and a date';
-        return;
-    }
-    // Create todo object
+// todo saves the data as object and it is pushed to todos using push() which converts it into an array of objects
+addButton.addEventListener("click", function(event){
+    event.preventDefault();
+    console.log("Button clicked!");
     const todo ={
-        text: inputData.value,
+        id: ID(),
+        text: inputData.value.trim(),
         date: todoDate.value,
         completed: false
     };
+    console.log("New todo:", todo);
+    if(todo.text !=="" && todo.date !== ""){
+        todos.push(todo);
+        console.log("Updated todos array:", todos);
+        renderTodoItems(todo); 
+        saveData();  
+        inputData.value="";
+        todoDate.value="";
+        errorDiv.innerHTML= "";
+    }else {
+        // If empty display this error
+        errorDiv.innerHTML = "Enter Todo and a Date of Completion";
+    }
+    //Clear the Error messages once user starts typing
+    [inputData, todoDate].forEach(input =>{
+        input.addEventListener("input", () => errorDiv.innerHTML="");
+    });
+    
+});
 
-   
-// Add to todos array, push the object todo to array
-    todos.push(todo);
+// render todo items added by user in the UI
+function renderTodoItems(todo){
+     console.log("Rendering todo:", todo);
+    const li= document.createElement("li");
+    li.dataset.id = todo.id;
 
-    const li = document.createElement('li');
-    li.innerHTML = `<input type="checkbox" ${todo.completed ? 'checked': ''} onchange="toggleTodo(this)">
-    <span class="todo-text">${todo.text}</span><span class="todo-date">${todo.date}</span><button onclick="deleteTask(this)">Delete</button>`
+    const checkbox =document.createElement("input");
+    checkbox.type = 'checkbox';
+    checkbox.className ='check';
+    checkbox.checked = todo.completed;
+    checkbox.addEventListener('change', function(){
+        toggleTodoComplete(todo.id);
+    });
+    
+    const todoText = document.createElement("span");
+    todoText.className = "todo-text";
+    todoText.textContent = todo.text;
 
+    const todoDateSpan = document.createElement("span");
+    todoDateSpan.className = "todo-date";
+    todoDateSpan.textContent = todo.date;
+
+    const editButton = document.createElement('button');
+    editButton.textContent = "Edit";
+    editButton.addEventListener("click", () =>  editTodo(todo.id));
+    
+    const deleteButton = document.createElement('button');
+    deleteButton.textContent = "Delete";
+    deleteButton.addEventListener("click", () =>  deleteTask(todo.id)); 
+
+
+    li.appendChild(checkbox);
+    li.appendChild(todoText);
+    li.appendChild(todoDateSpan);
+    li.appendChild(editButton);
+    li.appendChild(deleteButton);
     listDetails.appendChild(li);
     
-    // save to local storage
-    saveData();
-    // Clear the input area
-    inputData.value="";
-    todoDate.value="";
-    document.getElementById("error").textContent="";
-});
-// toggleTodo(this) function to toggle the checkboxes
-function toggleTodo(checkbox){
-    const li = checkbox.parentElement;
-    // const todoText = li.querySelector('span').textContent;
-    // const textElement = li.querySelector('span');
-    const todoText = li.querySelector('.todo-text');
-    const todoDate = li.querySelector('.todo-date');
-    console.log(todoText);
-    const todo = todos.find(t => t.text === todoText);
-    console.log(todo);
+}
+// Function to toggle the completion status of todo in the checkbox
+
+function toggleTodoComplete(todoId){
+    
+    const todo = todos.find(todo => todo.id === todoId);
     if(todo){
-        todo.completed =checkbox.checked;
-        if(checkbox.checked){
-            todoText.style.textDecoration = 'line-through';
-            todoDate.style.textDecoration = 'line-through';
-          
-        }
-        else{
-            todoText.style.textDecoration = 'none';
-            todoDate.style.textDecoration = 'none';
-           
-        }
-           
+        todo.completed = !todo.completed;
+        // console.log('Updated todos :', todos);
         saveData();
+        listDetails.innerHTML = "";  
+        todos.forEach(todo => renderTodoItems(todo));
+    }
+}
+// function save to local storage
+function saveData(){     
+    try{
+        if(!todos || todos.length ===0){
+            console.warn("Todos array is empty or undefined. Nothing to save");
+            return;
+        }
+    
+    localStorage.setItem('todos', JSON.stringify(todos));
+    console.log('Data saved to local storage:', localStorage.getItem('todos'));    
+
+    }catch(error){
+        console.error('Error saving the data', error);
     }
 }
 
-
-// function save to local storage
-function saveData(){     
-    localStorage.setItem('todos', JSON.stringify(todos));  
+// Function to edit todos
+function editTodo(todoId){
+    console.log(`The todoId is ${todoId} and its ${typeof(todoId)} type`);
+  
 }
 
 // Delete todos
-
-function deleteTask(button){ 
-
-    const li = button.parentElement;
-    const todoText = li.querySelector('span').textContent;
-     // Remove todo from todos array
-    todos = todos.filter(todo => todo.text !== todoText);
-    // console.log("Todos array after deletion:", todos);
-    // Save todo
-    li.remove();
-    saveData();
+function deleteTask(todoId){
+    console.log("Deleting todo:", todoId);
+    console.log("Before deletion:", todos);
+    todos = todos.filter(todo => todo.id !== todoId);
+    console.log('After filtering:', todos);
+    saveData();  
+    // renderTodoItems();
+    listDetails.innerHTML = "";  
+    todos.forEach(todo => renderTodoItems(todo));
+       
 }
 
-window.onload = loadTodos();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// addButton.addEventListener("click", function(){
-
-//     if (inputData.value === "" || todoDate.value === "") {
-//         const errorDiv = document.getElementById("error");
-//         errorDiv.textContent = 'Task and due date cannot be empty!';
-//         return;
-        
-//     } 
-        
-//         const li = document.createElement("li"); //Dynamically creating list elements
-
-//         li.innerHTML = `<span>${inputData.value}</span><span>${todoDate.value}</span>
-//         <button onclick="deleteTask(this)">Delete</button>`;
-
-//         listDetails.appendChild(li);
-
-//         inputData.value ="";
-//         todoDate.value="";
-//         errorDiv.textContent="";
-        
-// });
-
-// inputData.addEventListener("input", function () {
-//     document.getElementById("error").textContent = "";
-// });
-// todoDate.addEventListener("input", function () {
-//     document.getElementById("error").textContent = "";
-// });
-
-// // Delete Function
-// function deleteTask(button){
-//     button.parentElement.remove();
+window.addEventListener('load', function(){
     
-// }
-// // Save Data locally
-
-// function saveData(){
-//     localStorage.setItem('todos', JSON.stringify(listDetails));
-// }
-
+    loadTodos()
+});

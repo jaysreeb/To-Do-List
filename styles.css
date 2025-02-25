@@ -2,6 +2,7 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap');
 
+
 *{
     margin: 0;
     padding: 0;
@@ -11,59 +12,82 @@
 .container{
     width: 100%;
     min-height: 100vh;
-    background: linear-gradient(135deg,#21013b, rgb(252, 252, 252));;
+    background-image: linear-gradient(100deg, #575656, #062e3f);
     padding: 10px;
+
 }
 .todo-app{
     width: 100%;
     max-width: 740px;
-    height: 800px;
-    /* background: linear-gradient(135deg, rgb(252, 252, 252), #964d4d); */
-    background: #fcf2c1;
+    min-height: 800px;
+    /* height: 800px; */
+    /* background: linear-gradient(135deg, rgb(15, 215, 241), #964d4d); */
+    background: linear-gradient(135deg, #fdd4e5, #f3f4f5); 
     margin: 100px auto 20px;
     padding: 40px 30px 70px;
     border-radius: 10px;
     box-shadow: 5px 5px rgb(223, 230, 236);
 }
 .todo-app h2{
-    color: rgb(17, 17, 17);
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
+    border-right: solid 3px rgba(0, 0, 0, 0.75);
+    white-space: pre;
+    overflow: hidden;   
+    font-size: 30px;  
+    letter-spacing: 0.20rem;
+    margin-top: 50px;
+    margin-bottom: 40px;
+    max-width: 550px;
 }
+.todo-app h2{
+    animation: animated-text 2s steps(11,end) 0.5s 1 normal both,
+        animated-cursor 850ms steps(13, end) infinite;
+}
+@keyframes animated-text{
+    from{width: 0%;}
+    to{width: 740px;}
+  }
+  
+  /* cursor animations */
+  
+  @keyframes animated-cursor{
+    from{border-right-color: rgba(15, 4, 61, 0.75);}
+    to{border-right-color: transparent;}
+  }
+
 .todo-app h2 img{
     width: 70px;
     margin-left: 20px;
 }
 .row{
+    
     display: flex;
     align-items: center;
     justify-content: space-between;
     border-radius: 30px;
-    padding-left: 20px;
+    padding-left: 50px;
     margin-bottom: 25px;
     
 }
 
 input{  
-    /* margin-right: 0px;      */
-    /* border: none; */
-    outline: none;
-    /* background: transparent; */
+       
+    border: none;
+    outline: none; 
+    background: transparent;
     background: white;
-    padding: 12px;
+    padding: 8px;
     font-size: 20px;
     font-weight: 50px;    
-    border-radius: 20px;
-    border: #9c1506;
-}
+    border-radius: 20px;   
+    border:1px solid #a92bc9; 
+} 
 
 #addbutton{   
     /* margin-left: 70px; */
     border: none;
-    padding: 15px 40px; 
-    background: #ff5945;
-    color: #fff;
+    padding: 12px 30px; 
+    background: #54a88f;
+    color: #0c0c0c;
     font-size: 18px;
     cursor: pointer;
     border-radius: 40px;
@@ -78,20 +102,34 @@ input{
     background: transparent;
 }
 
+.check{
+    height: 20px;
+    width: 20px;
+    margin-right: 10px;
+}
+.check:checked + span{
+    text-decoration: line-through;
+    text-decoration-color: hsl(0, 0%, 2%);
+    text-decoration-style: wavy;
+    text-decoration-thickness: 3px;  
+}
 
 #list-container{
+    border: 1px solid #08b4b4;
+    border-radius: 20px;
     list-style: none;
     font-size: 20px;
     padding: 0;
 }
 
 li {
+    
     display: flex;
     align-items: center;
-    gap: 20px;  /* space between elements */
+    gap: 0px;  /* space between elements */
     padding: 10px;
     margin: 10px 0;
-    background : rgb(247, 237, 237);
+    /* background : rgb(247, 237, 237); */
     border-radius: 8px;
     /* box-shadow: 0 2px 4px rgba(0,0,0,0.1); */
 }
@@ -124,16 +162,8 @@ li span:first-child {
 
 /* Style the date */
 li span:nth-child(2) {
-    color: #111010;
+    color: #030303;
 }
-.strikethrough {
-    text-decoration: line-through;
-    
-}
-input[type="checkbox"]{
-   
-    width: 20px;
-    height: 20px;
-}
+
 
 

@@ -7,27 +7,40 @@
         <meta name="viewport" content="width=device-width , initial-scale=1">
         <title>To-Do List App</title>
         <link rel="stylesheet" href="./styles.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     </head>
     <body>
         
         <div class="container">
             <div class="todo-app">
-                <h2>To-Do List <img src="/images/sticky-note.png" alt="to do icon"></h2>
-            <div class="row">                                 
-                    <input type="text" id="input-box" placeholder="Add to your List" required>          
+                <h2>Taskify – Simplify Your Tasks </h2>
+            <div class="row">    
+                <form>                             
+                    <input type="text" id="input-box" placeholder="Add to your List" required>       
                
-                    <input type="date" id="datepick" min="2024-02-17">                               
+                    <input type="date" id="datepick" min="2025-02-17" placeholder="Add Date">                               
                    
                     <button id="addbutton">Add</button>    
-                    
+                </form> 
             </div>         
             <div id="error"></div> 
-           
+        <div class="lists-container">
+            
             <ul id="list-container">
-                    
+               
                     <!-- List will be added using Javascript -->
             </ul>     
+        </div>
+        <!-- Count number of completed Task -->
          
+        <div class="counter-container">
+            <div id="task-counters">
+               
+                Completed-Task: <span id="completed-counter">0</span> | Uncompleted:
+                <span id="uncompleted-counter">0</span>
+                
+            </div>
+        </div> 
         </div>
         <script src="./script.js"></script>
         <!-- <footer>
