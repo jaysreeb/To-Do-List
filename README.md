@@ -15,7 +15,7 @@ A simple **To-Do List** app built using **HTML, CSS, and JavaScript** that allow
 - A lot more coming soon
 
 ## 📸 Preview
-![Updated]](image-2.png)
+![alt text](image-3.png)
 
 ## 📂 Technologies Used
 - **HTML** - Structure  
