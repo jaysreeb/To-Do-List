@@ -70,12 +70,9 @@
     justify-content: space-between;
     border-radius: 30px;
     padding-left: 50px;
-    margin-bottom: 25px;
-    
+    margin-bottom: 25px;    
 }
-
-input{  
-       
+input{         
     border: none;
     outline: none; 
     background: transparent;
@@ -86,7 +83,6 @@ input{
     border-radius: 20px;   
     border:1px solid #a92bc9; 
 } 
-
 #addbutton{   
     /* margin-left: 70px; */
     border: none;
@@ -106,7 +102,6 @@ input{
     border-radius: 30%;
     background: transparent;
 }
-
 .check{
     height: 20px;
     width: 20px;
@@ -126,9 +121,7 @@ input{
     font-size: 20px;
     padding: 0;
 }
-
-li {
-    
+li {    
     display: flex;
     align-items: center;
     gap: 0px;  /* space between elements */
@@ -141,7 +134,6 @@ li {
 li span {
     flex: 1;  /* takes up available space */
 }
-
 /* Style the delete button */
 li button {    
     padding: 10px 10px 10px 10px;
@@ -153,20 +145,23 @@ li button {
     cursor: pointer;
     transition: background-color 0.2s;
 }
-
 li button:hover {
     background-color: #f8dfdf;
 }
-
 /* Style the task text specifically */
 li span:first-child {
     font-weight: 500;
 }
-
 /* Style the date */
 li span:nth-child(2) {
     color: #030303;
 }
-
-
-
+.counter-container{
+    font-size: 20px;
+    text-align: center;
+    justify-content: space-between;    
+}
+#completed-counter, #incomplete-counter{
+    color: #f00909;
+    font: size 30px; ;
+}

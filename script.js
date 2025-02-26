@@ -4,13 +4,28 @@ const addButton = document.getElementById("addbutton");
 const listDetails = document.getElementById("list-container");
 const errorDiv = document.getElementById("error");
 let todos =[]; // To store the todo objects
+let completedCount = 0;
+let inCompleteCount =0;
 //Check if the elements of the html are properly being captured
 // console.log("Checking elements:", {inputData,todoDate,addButton,listDetails});
-
 // Creating a function to generate ID's for todo
 function ID(){
     const uniqueId = Math.floor(Math.random() * 1000000).toString(16);
     return uniqueId;
+}
+//Function to update the count of completed and incompleted task
+function updateCount(){
+    completedCount = todos.filter(todo => todo.completed).length;
+    console.log("The no of Completed todos is", completedCount);
+    inCompleteCount = todos.length - completedCount;
+    console.log("No of Incomplete todos is", inCompleteCount);
+    renderCount();
+    saveData();
+}
+//Update UI with the number of completed vs Incomplet todos
+function renderCount(){
+    document.getElementById('completed-counter').textContent = completedCount;
+    document.getElementById('incomplete-counter').textContent = inCompleteCount;
 }
 // Load saved todos when page loads
 function loadTodos(){
@@ -21,9 +36,11 @@ function loadTodos(){
         if(savedTodos){
             todos = JSON.parse(savedTodos);
             listDetails.innerHTML = "";
-            // console.log('saved todos:', typeof(todos));
+            // console.log('saved todos:', todos);
             todos.forEach(todo => renderTodoItems(todo));
+            updateCount();
         }
+        // console.log('saved todos:', todos);
     }catch(error){
         console.log('Error loading todoso:', error);
     }
@@ -43,6 +60,7 @@ addButton.addEventListener("click", function(event){
     if(todo.text !=="" && todo.date !== ""){
         todos.push(todo);
         // console.log("Updated todos array:", todos);
+        updateCount();
         renderTodoItems(todo); 
         saveData();  
         inputData.value="";
@@ -95,17 +113,18 @@ function renderTodoItems(todo){
     li.appendChild(todoDateSpan);
     li.appendChild(editButton);
     li.appendChild(deleteButton);
+    // li.appendChild()
     listDetails.appendChild(li);
     
 }
 // Function to toggle the completion status of todo in the checkbox
 
-function toggleTodoComplete(todoId){
-    
+function toggleTodoComplete(todoId){    
     const todo = todos.find(todo => todo.id === todoId);
     if(todo){
         todo.completed = !todo.completed;
-        // console.log('Updated todos :', todos);
+        // console.log('Updated todos :', todo);
+        updateCount();
         saveData();
         listDetails.innerHTML = "";  
         todos.forEach(todo => renderTodoItems(todo));
@@ -120,7 +139,7 @@ function saveData(){
         }
     
     localStorage.setItem('todos', JSON.stringify(todos));
-    console.log('Data saved to local storage:', localStorage.getItem('todos'));    
+    // console.log('Data saved to local storage:', localStorage.getItem('todos'));    
 
     }catch(error){
         console.error('Error saving the data', error);
@@ -162,6 +181,7 @@ function editTodo(todoId){
             // console.log(updatedText);
             textSpan.textContent = updatedText;  // Update the text span in the DOM
             // console.log(updatedText);
+            updateCount();
             saveData();      // Save the updated todos
         }
         inputField.replaceWith(textSpan);  // Replace input with text        
@@ -178,16 +198,11 @@ function deleteTask(todoId){
     console.log("Before deletion:", todos);
     todos = todos.filter(todo => todo.id !== todoId);
     console.log('After filtering:', todos);
+    updateCount();
     saveData();  
     listDetails.innerHTML = "";  
     todos.forEach(todo => renderTodoItems(todo));      
 }
-//Function to update the count of completed and incompleted task
-function updateCount(){
-
-
-}
-
 window.addEventListener('load', function(){
     loadTodos()
 });
