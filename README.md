@@ -6,7 +6,9 @@ A simple **To-Do List** app built using **HTML, CSS, and JavaScript** that allow
 - ➕ **Add Tasks**  
 - ✅ **Mark Tasks as Completed**  
 - ❌ **Delete Tasks**  
-- 💾 **Save Tasks Using localStorage** (Data remains even after refreshing)
+- 💾 **Save Tasks Using localStorage (Data remains even after refreshing)** 
+- ✍ **Edit Task**
+-    **Added a Pretty Scrollbar**
 
 
 ## 🚀 Updating the below features
@@ -17,6 +19,7 @@ A simple **To-Do List** app built using **HTML, CSS, and JavaScript** that allow
 ![alt text](image-4.png)
 ![alt text](image-5.png)
 ![alt text](image-3.png)
+![alt text](image-6.png)
 
 
 ## 📂 Technologies Used

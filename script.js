@@ -120,7 +120,7 @@ function saveData(){
         }
     
     localStorage.setItem('todos', JSON.stringify(todos));
-    // console.log('Data saved to local storage:', localStorage.getItem('todos'));    
+    console.log('Data saved to local storage:', localStorage.getItem('todos'));    
 
     }catch(error){
         console.error('Error saving the data', error);
@@ -129,58 +129,63 @@ function saveData(){
 
 // Function to edit todos
 function editTodo(todoId){
-    // console.log(`The todoId is ${todoId} and its ${typeof(todoId)} type`);
-    // Find the todo object in the array
+    // // Find the todo object in the array(of objects) to be edited and save in editingTodo variable
     const editingTodo = todos.find(editingTodo => editingTodo.id === todoId);
-    // console.log("Todo to be edited editingTodo", editingTodo.id , "todo Id is", todoId);
+    console.log("Todo to be edited editingTodo", editingTodo.id , "todo Id is", todoId);
 
     if(!editingTodo){
         console.warn("Todo not found");
         return;
     }
     //data-id created in the render function - li.dataset.id = todo.id; Now, we need to check for todoitem in the li
+    // Find the <li> element for the todo
     const todoItem = document.querySelector(`li[data-id="${todoId}"]`); 
     if (!todoItem) return console.warn("Todo item not found!");
 
+    // Find the text span inside the <li>
     const textSpan = todoItem.querySelector(".todo-text");
     if (!textSpan) return console.warn("Text span not found!");
 
+    // Create an input field for editing
     const inputField = document.createElement("input");
-    // console.log("The editingTodo.text is ",editingTodo.text);
     inputField.value = editingTodo.text;
     inputField.className = "edit-input";
-
+    // Replace the text span with the input field
     textSpan.replaceWith(inputField);
     inputField.focus();
-    // console.log(inputField);
-
+    // Handle the "blur" event (when the input loses focus)
     inputField.addEventListener("blur", () => {
         const updatedText = inputField.value.trim();
         // console.log(updatedText);
-        if (updatedText) {
-            todos.text = updatedText;  
-            saveData();  // Save updated data
-            textSpan.textContent = updatedText;  // Directly update UI
+        if (updatedText){
+            editingTodo.text = updatedText;  // Update the todo text in the array
+            // console.log(updatedText);
+            textSpan.textContent = updatedText;  // Update the text span in the DOM
+            // console.log(updatedText);
+            saveData();      // Save the updated todos
         }
-        inputField.replaceWith(textSpan);  // Replace input with text
+        inputField.replaceWith(textSpan);  // Replace input with text        
     });
-
+    // Handle the "Enter" key
     inputField.addEventListener("keydown", (event) => {
-        if (event.key === "Enter") inputField.blur();
+        if (event.key === "Enter") inputField.blur();   // Trigger the blur event to save changes      
     });
 }
 
 // Delete todos
 function deleteTask(todoId){
-    // console.log("Deleting todo:", todoId);
-    // console.log("Before deletion:", todos);
+    console.log("Deleting todo:", todoId);
+    console.log("Before deletion:", todos);
     todos = todos.filter(todo => todo.id !== todoId);
-    // console.log('After filtering:', todos);
+    console.log('After filtering:', todos);
     saveData();  
-    // renderTodoItems();
     listDetails.innerHTML = "";  
-    todos.forEach(todo => renderTodoItems(todo));
-       
+    todos.forEach(todo => renderTodoItems(todo));      
+}
+//Function to update the count of completed and incompleted task
+function updateCount(){
+
+
 }
 
 window.addEventListener('load', function(){

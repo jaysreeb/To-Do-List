@@ -19,12 +19,19 @@
 .todo-app{
     width: 100%;
     max-width: 740px;
-    min-height: 800px;
+    height: 900px;
+    overflow-y: auto;
     background: linear-gradient(135deg, #f3c294, #eeaafc); 
     margin: 100px auto 20px;
     padding: 40px 30px 70px;
     border-radius: 10px;
     box-shadow: 5px 5px rgb(223, 230, 236);
+}
+.todo-app::-webkit-scrollbar {
+     width: 10px; /*Width of the scrollbar */
+}
+.todo-app::-webkit-scrollbar-thumb {
+    background: #b815aa; /* Color of the scrollbar */
 }
 .todo-app h2{
     border-right: solid 3px rgba(0, 0, 0, 0.75);
